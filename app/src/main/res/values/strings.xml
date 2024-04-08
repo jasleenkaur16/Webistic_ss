@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Webistic Project</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Home_fragment">Home</string>
+    <string name="Explore_fragment">Explore</string>
+    <string name="Create_fragment">Create</string>
+    <string name="Notifications_fragment">Notifications</string>
+    <string name="Profile_fragment">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
