@@ -8,21 +8,34 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
+    private FirebaseAuth authMain;
+    private FirebaseUser user_current;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        authMain =FirebaseAuth.getInstance();
+        user_current= authMain.getCurrentUser();
+        if(user_current==null){
+            Intent intentMain = new Intent(getApplicationContext(),LoginPage.class);
+            startActivity(intentMain);
+            finish();
+        }
 
         bottomNavigation=findViewById(R.id.bottom_navigation);
         FragmentManager fragmentManager = getSupportFragmentManager();

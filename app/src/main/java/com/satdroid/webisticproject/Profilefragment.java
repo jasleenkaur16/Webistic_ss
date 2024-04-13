@@ -1,12 +1,15 @@
 package com.satdroid.webisticproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -15,10 +18,11 @@ import android.view.ViewGroup;
 // */
 public class Profilefragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    AppCompatButton settings_btn;
+//    // TODO: Rename parameter arguments, choose names that match
+//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+//    private static final String ARG_PARAM1 = "param1";
+//    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
 //    private String mParam1;
@@ -60,5 +64,21 @@ public class Profilefragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profilefragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view,
+                              Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        settings_btn=view.findViewById(R.id.settings_profile);
+
+        settings_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent isetting=new Intent(getContext(), UserSettings.class);
+                startActivity(isetting);
+            }
+        });
     }
 }

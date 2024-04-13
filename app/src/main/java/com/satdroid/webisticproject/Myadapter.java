@@ -33,9 +33,9 @@ public class Myadapter extends RecyclerView.Adapter<Myadapter.MyViewHolder> {
     public int getItemCount() {
         return  notiList.size();
     }
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder
+    {
         private TextView noti_tv;
-
         public MyViewHolder(View itemView) {
             super(itemView);
             noti_tv = itemView.findViewById(R.id.noti_des_tv);

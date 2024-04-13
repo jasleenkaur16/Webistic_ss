@@ -1,6 +1,7 @@
 package com.satdroid.webisticproject;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -23,6 +25,10 @@ import java.util.ArrayList;
 // */
 public class HomeFragment extends Fragment {
 
+    private RecyclerView recyclerView;
+    private VideoAdapter videoAdapter;
+    private List<VideoModel> videoList;
+    private boolean isFirstScroll = true;
     AppCompatButton like_button,share_button,comment_button,save_button;
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,8 +78,7 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
     @Override
-    public void onViewCreated(View view,
-                              Bundle savedInstanceState)
+    public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
         like_button=view.findViewById(R.id.like_btn);
@@ -81,30 +86,46 @@ public class HomeFragment extends Fragment {
         comment_button=view.findViewById(R.id.comment_btn);
         save_button=view.findViewById(R.id.save_btn);
 
-        like_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              Toast.makeText(getContext(),"Like Button",Toast.LENGTH_SHORT).show();
-            }
-        });
-        share_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"share Button",Toast.LENGTH_SHORT).show();
-            }
-        });
-        comment_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"Comment Button",Toast.LENGTH_SHORT).show();
+        // Initialize your video list with URIs of the videos you want to play
+        videoList = new ArrayList<>();
+        videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
+        videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
+        videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
+        videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
+        // Add more videos as needed
 
-            }
-        });
-        save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"Save Button",Toast.LENGTH_SHORT).show();
-            }
-        });
+        recyclerView = view.findViewById(R.id.rcv_home);
+        videoAdapter = new VideoAdapter(requireContext(), videoList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setAdapter(videoAdapter);
+
+
+//        like_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//              Toast.makeText(getContext(),"Like Button",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        share_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(),"share Button",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        comment_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(),"Comment Button",Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//        save_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Toast.makeText(getContext(),"Save Button",Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

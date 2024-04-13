@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "900111369241",
+    "project_id": "mmt2-7b826",
+    "storage_bucket": "mmt2-7b826.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900111369241:android:772136ed52f39c66649688",
+        "android_client_info": {
+          "package_name": "com.satdroid.webisticproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAltb3iEG3JYWxzGynaxnrBGaTx8ciqHtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
