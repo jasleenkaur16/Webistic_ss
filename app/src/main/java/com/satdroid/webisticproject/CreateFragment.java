@@ -18,12 +18,18 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -31,13 +37,11 @@ import com.google.firebase.storage.FirebaseStorage;
 // * create an instance of this fragment.
 // */
 public class CreateFragment extends Fragment {
-    private ImageButton recordVideoBtn;
+    private ImageButton recordVideoBtn, uploadBtn;
     private VideoView videoView;
-
-//    private DatabaseReference databaseReference;
-//    private FirebaseDatabase firebaseDatabase;
-//    private FirebaseAuth firebaseAuth;
-//    private FirebaseStorage firebaseStorage;
+    private Uri videoUri;
+     FirebaseDatabase firebaseDatabase;
+     DatabaseReference databaseReference;
 
 
 //    // TODO: Rename parameter arguments, choose names that match
@@ -91,32 +95,13 @@ public class CreateFragment extends Fragment {
     public void onViewCreated(View view,
                               Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference("Uploaded Videos");
+
         recordVideoBtn = view.findViewById(R.id.playButton);
         videoView = view.findViewById(R.id.videoView);
-//        private DatabaseReference databaseReference;
-//        private FirebaseDatabase firebaseDatabase;
-//        private FirebaseAuth firebaseAuth;
-//        private FirebaseStorage firebaseStorage;
-
-//        firebaseDatabase=FirebaseDatabase.getInstance();
-//        firebaseAuth=FirebaseAuth.getInstance();
-//        firebaseStorage=FirebaseStorage.getInstance();
-//
-//        databaseReference=firebaseDatabase.getReference();
-//        Toast.makeText(getContext(),"User id "+firebaseAuth.getUid(),Toast.LENGTH_SHORT).show();
-//
-//        databaseReference.setValue("My video").addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void unused) {
-//                Toast.makeText(getContext(),firebaseAuth.getUid(),Toast.LENGTH_SHORT).show();
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.d("exception handled","E "+e);
-//                Toast.makeText(getContext(), (CharSequence) e,Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        uploadBtn = view.findViewById(R.id.uploda_btn);
 
         // Adding click listener for recording button.
         recordVideoBtn.setOnClickListener(v -> {
@@ -125,18 +110,58 @@ public class CreateFragment extends Fragment {
             // Starting an activity for result.
             startActivityForResult(intent, 1);
         });
+
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri newUri=videoUri;
+                if (newUri != null) {
+                    StorageReference ImageFolder = FirebaseStorage.getInstance().getReference().child("Uploaded Videos");
+                    Toast.makeText(getContext(),"Inside firebase storage 2",Toast.LENGTH_SHORT).show();
+                    final StorageReference ImageName = ImageFolder.child("Video "+ System.currentTimeMillis());
+
+                    ImageName.putFile(newUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            Toast.makeText(getContext()," Video uploaded",Toast.LENGTH_SHORT).show();
+                            ImageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Toast.makeText(getContext()," 3 Dwd Url obtained "+uri,Toast.LENGTH_SHORT).show();
+
+                                    UriDataModal uriDataModal=new UriDataModal(uri.toString());
+                                    databaseReference.child(String.valueOf(System.currentTimeMillis()))
+                                            .setValue(uriDataModal).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Toast.makeText(getContext()," 4 Url string realtime db",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(getContext()," 4 Url string not in realtime db",Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == 1)
-         {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             // Setting video URI for our video view.
-            Uri videoUri = data.getData();
+            videoUri = data.getData();
             videoView.setVideoURI(videoUri);
             // Starting the video view.
             videoView.start();
         }
     }
-    }
+}

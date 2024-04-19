@@ -38,7 +38,7 @@
         android:background="@drawable/gallerybtn" />
 
     <ImageButton
-        android:id="@+id/imageView3"
+        android:id="@+id/uploda_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"

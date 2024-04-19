@@ -4,16 +4,27 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +40,8 @@ public class HomeFragment extends Fragment {
     private VideoAdapter videoAdapter;
     private List<VideoModel> videoList;
     private boolean isFirstScroll = true;
+
+    private Uri videoUri;
     AppCompatButton like_button,share_button,comment_button,save_button;
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,6 +98,14 @@ public class HomeFragment extends Fragment {
         share_button=view.findViewById(R.id.share_btn);
         comment_button=view.findViewById(R.id.comment_btn);
         save_button=view.findViewById(R.id.save_btn);
+        videoList = new ArrayList<>();
+
+        //intances
+
+
+         recyclerView = view.findViewById(R.id.rcv_home);
+
+          recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         // Initialize your video list with URIs of the videos you want to play
         videoList = new ArrayList<>();
@@ -92,12 +113,12 @@ public class HomeFragment extends Fragment {
         videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
         videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
         videoList.add(new VideoModel(Uri.parse("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")));
-        // Add more videos as needed
+      //   Add more videos as needed
 
         recyclerView = view.findViewById(R.id.rcv_home);
-        videoAdapter = new VideoAdapter(requireContext(), videoList);
+       videoAdapter = new VideoAdapter(requireContext(), videoList);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(videoAdapter);
 
 
